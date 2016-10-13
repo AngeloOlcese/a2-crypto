@@ -68,6 +68,7 @@ public class assignment2 {
         try {
             registerKeys(serverURL, port, username);
         }catch (Exception e) {
+            System.out.println(e);
             System.out.println("Failure in registering keys, now exiting");
             System.exit(0);
         }

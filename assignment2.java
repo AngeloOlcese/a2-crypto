@@ -133,6 +133,7 @@ public class assignment2 {
         URL url = new URL(serverURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
+        connection.setRequestProperty("Conent-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
         
         //Create a JSON object of our data, then send it

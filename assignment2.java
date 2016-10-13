@@ -129,6 +129,7 @@ public class assignment2 {
         String keys = rsaPublicString + " " + dsaPublicString;
         
         //Open the connection to the server
+        serverURL += "/registerKey/" + username;
         URL url = new URL(serverURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

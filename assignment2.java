@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 
 public class assignment2 {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
         //This code is used to take in the arguments according to their flags.
         String serverURL = "";
         String port = "";
@@ -52,7 +52,6 @@ public class assignment2 {
             System.out.println("Not enough arguments");
             printUsage();
         }
-        System.out.println(serverURL + port + username);
         if (serverURL == "") {
             System.out.println("Missing required option: s");
             printUsage();
@@ -66,6 +65,13 @@ public class assignment2 {
             printUsage();
         }
         //Register a public key given the username
+        try {
+            registerKeys(serverURL, port, username);
+        }catch (Exception e) {
+            System.out.println("Failure in registering keys, now exiting");
+            System.exit(0);
+        }
+        //Ask for command input
 		Scanner kb = new Scanner(System.in);
         System.out.print("\nenter command>");
         String command; String[] commands;

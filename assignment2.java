@@ -198,7 +198,7 @@ public class assignment2 {
     }
     private static void composeMessage(KeyPair[] keys, String serverURL,String port, String username, String otherUser, String message) throws NoSuchAlgorithmException, NoSuchProviderException, IOException, ProtocolException, MalformedURLException {
         if (!message.equals("")) {
-            System.out.println(keys[1].getPublic().getEncoded);
+            System.out.println(keys[1].getPublic().getEncoded());
             String otherKeys = "";
             try {
                 otherKeys = getUserKeys(serverURL, port, otherUser);

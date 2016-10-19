@@ -444,11 +444,9 @@ public class assignment2 {
             reader = Json.createReader(new StringReader(messageMeta.get(i).toString()));
             JsonObject message = reader.readObject();
             try {
-                if (!decrypt(keys, username, origURL, port, message)) {
-                    System.out.println("Failure to read message, something about it was incorrect");
-                }
+                decrypt(keys, username, origURL, port, message);
             } catch (Exception e) {
-                System.out.println("Failure to decrypt message");
+                System.out.println("Exception while attempting to decrypt message");
                 System.out.println(e);
                 continue;
             }
@@ -538,8 +536,6 @@ public class assignment2 {
         //Parse Mformatted as user message
         String mformmatedString = new String(mformatted);
         String[] messageParts = mformmatedString.split(":");
-        System.out.println(messageParts[0]);
-        System.out.println(senderID);
         if (!messageParts[0].equals(senderID)) {
             return false;
         }

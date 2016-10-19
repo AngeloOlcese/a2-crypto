@@ -292,7 +292,7 @@ public class assignment2 {
         byte[] c2base64 = encoder.encode(c2);
         String c1base64String = new String(c1base64);
         String c2base64String = new String(c2base64);
-        String combined = c1base64String + "%" + c2base64String;
+        String combined = c1base64String + " " + c2base64String;
         
         Signature dsaSig = Signature.getInstance("DSA");
         dsaSig.initSign(keys[1].getPrivate());
@@ -300,7 +300,7 @@ public class assignment2 {
         byte[] signature = encoder.encode(dsaSig.sign());
         
         //Final ciphertext
-        String output = combined + "%" + new String(signature);
+        String output = combined + " " + new String(signature);
         
         //Create JsonObject to send to server
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -463,7 +463,7 @@ public class assignment2 {
         String senderID = messageData.getString("senderID");
         int messageID = messageData.getInt("messageID");
         String encryptedMessage = messageData.getString("message");
-        String[] message = encryptedMessage.split("%");
+        String[] message = encryptedMessage.split(" ");
         
         //Split the message into its parts and decode
         String c1Base64 = message[0];
@@ -472,7 +472,7 @@ public class assignment2 {
         byte[] c2 = decoder.decode(message[1]);
         byte[] sigma = decoder.decode(message[2].getBytes());
         
-        String otherKeyString = getUserKeys(serverURL, port, senderID.trim());
+        String otherKeyString = getUserKeys(serverURL, port, senderID);
         String[] otherKeys = otherKeyString.split("%");
               
         //Verify dsa signature
@@ -484,7 +484,7 @@ public class assignment2 {
         //Verify the signature
         Signature dsaSig = Signature.getInstance("DSA");
         dsaSig.initVerify(otherDSAPubKey);
-        dsaSig.update((c1Base64 + "%" + c2Base64).getBytes());
+        dsaSig.update((c1Base64 + " " + c2Base64).getBytes());
         boolean verified = dsaSig.verify(sigma);
         if (!verified) {
             return false;
@@ -497,7 +497,7 @@ public class assignment2 {
             rsaCipher.init(Cipher.DECRYPT_MODE, keys[0].getPrivate());
             K = rsaCipher.doFinal(c1);
         }catch (Exception e) {
-            System.out.print("Butts");
+        System.out.println("butts");
             return false;
         }
         SecretKey aesKey = new SecretKeySpec(K, 0, K.length, "AES"); 
@@ -510,14 +510,12 @@ public class assignment2 {
         	aes.init(aes.DECRYPT_MODE, aesKey, new IvParameterSpec(IV));    
             mpadded = aes.doFinal(Arrays.copyOfRange(c2, 16, c2.length));
         }catch (Exception e) {
-            System.out.print("Butts");
             return false;
         }
         //Verify the pkcs padding
         byte endByte = mpadded[mpadded.length - 1];
         for (int i = 1; i < (int)endByte + 1; i++) {
             if (mpadded[mpadded.length - i] != endByte) {
-                System.out.print("Butts");
                 return false;
             }
         }
@@ -533,7 +531,7 @@ public class assignment2 {
         byte[] crcRA = Arrays.copyOfRange(buffer.array(), 4, 8);
         for (int i = 0; i < 4; i++) {
             if (crcRA[i] != crc[i]) {
-                System.out.print("Butts");
+            System.out.println("butts");
                 return false;
             }
         }
@@ -542,7 +540,7 @@ public class assignment2 {
         String mformmatedString = new String(mformatted);
         String[] messageParts = mformmatedString.split(":");
         if (!messageParts[0].equals(senderID)) {
-            System.out.print("Butts");
+        System.out.println("butts");
             return false;
         }
         if (!messageParts[1].contains("READMESSAGE")) {

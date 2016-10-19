@@ -443,7 +443,9 @@ public class assignment2 {
             reader = Json.createReader(new StringReader(messageMeta.get(i).toString()));
             JsonObject message = reader.readObject();
             try {
-                decrypt(keys, username, origURL, port, message);
+                if (!decrypt(keys, username, origURL, port, message)) {
+                    System.out.println("Failure to read message, something about it was incorrect");
+                }
             } catch (Exception e) {
                 System.out.println("Failure to decrypt message");
                 System.out.println(e);
@@ -493,8 +495,8 @@ public class assignment2 {
             rsaCipher.init(Cipher.DECRYPT_MODE, keys[0].getPrivate());
             K = rsaCipher.doFinal(c1);
         }catch (Exception e) {
-            System.out.println("Failure to decrypt c2");
-            System.out.println(e);
+            System.out.print("Butts");
+            return false;
         }
         SecretKey aesKey = new SecretKeySpec(K, 0, K.length, "AES"); 
         
@@ -506,13 +508,14 @@ public class assignment2 {
         	aes.init(aes.DECRYPT_MODE, aesKey, new IvParameterSpec(IV));    
             mpadded = aes.doFinal(Arrays.copyOfRange(c2, 16, c2.length));
         }catch (Exception e) {
-            System.out.println("Failure to decrypt c2");
-            System.out.println(e);
+            System.out.print("Butts");
+            return false;
         }
         //Verify the pkcs padding
         byte endByte = mpadded[mpadded.length - 1];
         for (int i = 1; i < (int)endByte + 1; i++) {
             if (mpadded[mpadded.length - i] != endByte) {
+                System.out.print("Butts");
                 return false;
             }
         }
@@ -528,6 +531,7 @@ public class assignment2 {
         byte[] crcRA = Arrays.copyOfRange(buffer.array(), 4, 8);
         for (int i = 0; i < 4; i++) {
             if (crcRA[i] != crc[i]) {
+                System.out.print("Butts");
                 return false;
             }
         }
@@ -536,6 +540,7 @@ public class assignment2 {
         String mformmatedString = new String(mformatted);
         String[] messageParts = mformmatedString.split(":");
         if (!messageParts[0].equals(senderID)) {
+            System.out.print("Butts");
             return false;
         }
         if (!messageParts[1].contains("READMESSAGE")) {

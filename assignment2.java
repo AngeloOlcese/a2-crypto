@@ -198,6 +198,7 @@ public class assignment2 {
     }
     private static void composeMessage(KeyPair[] keys, String serverURL,String port, String username, String otherUser, String message) throws NoSuchAlgorithmException, NoSuchProviderException, IOException, ProtocolException, MalformedURLException {
         if (!message.equals("")) {
+            System.out.println(keys[1].getPublic().getEncoded);
             String otherKeys = "";
             try {
                 otherKeys = getUserKeys(serverURL, port, otherUser);
@@ -298,7 +299,6 @@ public class assignment2 {
         dsaSig.initSign(keys[1].getPrivate());
         dsaSig.update(combined.getBytes());
         byte[] signature = encoder.encode(dsaSig.sign());
-        System.out.println(new String(signature));
         
         //Final ciphertext
         String output = combined + " " + new String(signature);
@@ -357,7 +357,6 @@ public class assignment2 {
         }
 
         connection.getResponseMessage();
-        //System.out.println(connection.getResponseMessage());
         KeyPair[] keyPairs = {rsa, dsa};
         return keyPairs;
     }
@@ -481,12 +480,12 @@ public class assignment2 {
         X509EncodedKeySpec dsaX509Key = new X509EncodedKeySpec(dsaByteKey);
         KeyFactory kf = KeyFactory.getInstance("DSA");
         PublicKey otherDSAPubKey = kf.generatePublic(dsaX509Key);
+        System.out.println(otherDSAPubKey.getEncoded());
         
         //Verify the signature
         Signature dsaSig = Signature.getInstance("DSA");
         dsaSig.initVerify(otherDSAPubKey);
         dsaSig.update((c1Base64 + " " + c2Base64).getBytes());
-        System.out.println(message[2].getBytes());
         boolean verified = dsaSig.verify(sigma);
         if (!verified) {
             return false;

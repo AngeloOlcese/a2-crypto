@@ -298,6 +298,7 @@ public class assignment2 {
         dsaSig.initSign(keys[1].getPrivate());
         dsaSig.update(combined.getBytes());
         byte[] signature = encoder.encode(dsaSig.sign());
+        System.out.println(new String(signature));
         
         //Final ciphertext
         String output = combined + " " + new String(signature);
@@ -485,6 +486,7 @@ public class assignment2 {
         Signature dsaSig = Signature.getInstance("DSA");
         dsaSig.initVerify(otherDSAPubKey);
         dsaSig.update((c1Base64 + " " + c2Base64).getBytes());
+        System.out.println(message[2].getBytes());
         boolean verified = dsaSig.verify(sigma);
         if (!verified) {
             return false;

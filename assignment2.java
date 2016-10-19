@@ -256,7 +256,7 @@ public class assignment2 {
         byte[] c1 = rsaCipher.doFinal(aesKey.getEncoded());
         
         //Create Mformatted
-        String mformatted = otherUser + ":" + message;
+        String mformatted = username + ":" + message;
         byte[] mformatRA = mformatted.getBytes();
         
         //Create the CRC32 value
@@ -485,18 +485,18 @@ public class assignment2 {
         dsaSig.initVerify(otherDSAPubKey);
         dsaSig.update((c1Base64 + " " + c2Base64).getBytes());
         boolean verified = dsaSig.verify(sigma);
-        if (verified) {
+        if (!verified) {
             return false;
         }
         
         //Find K
         byte[] K = null;
+        
         try {
             Cipher rsaCipher = Cipher.getInstance("RSA/ECB/Pkcs1Padding");
             rsaCipher.init(Cipher.DECRYPT_MODE, keys[0].getPrivate());
             K = rsaCipher.doFinal(c1);
         }catch (Exception e) {
-        System.out.println("butts");
             return false;
         }
         SecretKey aesKey = new SecretKeySpec(K, 0, K.length, "AES"); 
@@ -528,9 +528,9 @@ public class assignment2 {
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(crcVal);
         byte[] crcRA = Arrays.copyOfRange(buffer.array(), 4, 8);
+        
         for (int i = 0; i < 4; i++) {
             if (crcRA[i] != crc[i]) {
-            System.out.println("butts");
                 return false;
             }
         }
@@ -538,10 +538,12 @@ public class assignment2 {
         //Parse Mformatted as user message
         String mformmatedString = new String(mformatted);
         String[] messageParts = mformmatedString.split(":");
+        System.out.println(messageParts[0]);
+        System.out.println(senderID);
         if (!messageParts[0].equals(senderID)) {
-        System.out.println("butts");
             return false;
         }
+        
         if (!messageParts[1].contains("READMESSAGE")) {
             composeMessage(keys, serverURL, port, username, senderID, "READMESSAGE " + messageID);
         }

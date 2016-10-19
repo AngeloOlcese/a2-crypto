@@ -14,4 +14,4 @@ then there are 4 flags that can be invoked, three of which are mandatory
 The client has been tested on the jmessage.server.isi.jhu.edu server port 80.
 It can send and recieve messages with different usernames between itself
 and the reference client. All of the commands should be fully functional given
-proper input.
+proper input. Messages are all sent with the id number 0.

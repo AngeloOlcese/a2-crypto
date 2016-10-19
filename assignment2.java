@@ -46,6 +46,8 @@ public class assignment2 {
                     case "-w": case "--password":
                         password = args[2*i+1];
                         break;
+                    case "-cp":
+                        break;
                     default:
                         System.out.println("Invalid input flag:" + args[2*i]);
                         System.exit(0);

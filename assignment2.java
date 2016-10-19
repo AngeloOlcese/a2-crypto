@@ -198,7 +198,7 @@ public class assignment2 {
     }
     private static void composeMessage(KeyPair[] keys, String serverURL,String port, String username, String otherUser, String message) throws NoSuchAlgorithmException, NoSuchProviderException, IOException, ProtocolException, MalformedURLException {
         if (!message.equals("")) {
-            System.out.println(keys[1].getPublic().getEncoded());
+            System.out.println(new String(keys[1].getPublic().getEncoded()));
             String otherKeys = "";
             try {
                 otherKeys = getUserKeys(serverURL, port, otherUser);
@@ -480,7 +480,7 @@ public class assignment2 {
         X509EncodedKeySpec dsaX509Key = new X509EncodedKeySpec(dsaByteKey);
         KeyFactory kf = KeyFactory.getInstance("DSA");
         PublicKey otherDSAPubKey = kf.generatePublic(dsaX509Key);
-        System.out.println(otherDSAPubKey.getEncoded());
+        System.out.println(new String(otherDSAPubKey.getEncoded()));
         
         //Verify the signature
         Signature dsaSig = Signature.getInstance("DSA");
